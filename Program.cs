@@ -15,16 +15,18 @@ namespace Minesweeper
         static void Main()
         {
             newGame();
-
         }
 
         public static void newGame()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-             
-            // new shit
 
+
+            Application.Run(new Form1());
+
+            // old shit
+            /*
             GameTile[,] board = new GameTile[10, 10];
 
             for (int i = 0; i < 10; i++)
@@ -37,8 +39,9 @@ namespace Minesweeper
 
             GameTile.setMines(board);
             GameTile.setAdjacentMines(board);
+            */
 
-            Application.Run(new Form1(board));
+            // Application.Run(new Form1(board));
         }
 
     }
