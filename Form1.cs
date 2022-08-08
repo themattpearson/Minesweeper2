@@ -71,7 +71,7 @@ namespace Minesweeper
             System.IO.Stream explosionSoundStream = Properties.Resources.explosion_x;
             System.Media.SoundPlayer explosionSound = new System.Media.SoundPlayer(explosionSoundStream);
 
-            revealMines();
+            RevealMines();
             explosionSound.Play();
             PromptForNewGame("loss");
         }
@@ -84,7 +84,6 @@ namespace Minesweeper
             tile._button.Text = "⚑";
             tile._button.BackColor = Color.Black;
             tile._button.ForeColor = Color.Yellow;
-
         }
 
         public void RemoveFlag(GameTile tile)
@@ -201,23 +200,17 @@ namespace Minesweeper
                 default:
                     break;
             }
-
+            
             CheckForWin();
         }
 
-        public void revealMines()
+        public void RevealMines()
         {
-            for (int i = 0; i < _gameboard.GetNumTiles(); i++)
+            foreach(GameTile tile in _gameboard.GetGameTiles())
             {
-                for (int j = 0; j < _gameboard.GetNumTiles(); j++)
+                if (tile.GetIsMine())
                 {
-                    GameTile tile = _gameboard.GetGameTile(i, j);
-
-                    if (tile.GetIsMine())
-                    {
-                        setButtonTextAndColor(tile, tile.GetIsMarked() ? Color.Orange : Color.IndianRed, Color.Black, "💣");
-                    }
-
+                    setButtonTextAndColor(tile, tile.GetIsMarked() ? Color.Orange : Color.IndianRed, Color.Black, "💣");
                 }
             }
         }
@@ -237,9 +230,8 @@ namespace Minesweeper
                 // all tiles must be revealed or marked
                 if (!tile.GetIsRevealed() && !tile.GetIsMarked())
                     return;
-
-                PromptForNewGame("win");
-            }         
+            }
+            PromptForNewGame("win");
         }
 
         public void clearBoard()
@@ -248,20 +240,6 @@ namespace Minesweeper
             {
                 setButtonTextAndColor(tile, Color.LightGray, Color.LightGray, "");
             }
-        }
-
-        public void UpdateButton(GameTile tile)
-        {
-
-            if(tile.GetIsRevealed() == true)
-            {
-
-            }
-            else if(tile.GetIsMarked() == true)
-            {
-
-            }
-
         }
 
         public void setButtonTextAndColor(GameTile tile, Color backColor, Color foreColor, String text)
