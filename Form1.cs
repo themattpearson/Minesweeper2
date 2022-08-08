@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static Minesweeper.Game;
 
 namespace Minesweeper
 {
@@ -12,7 +12,7 @@ namespace Minesweeper
 
         public Form1()
         {
-            _game = new Game("easy");
+            _game = new Game(Difficulty.EASY);
             _gameboard = _game.GetGameboard();
 
             InitializeComponent();
@@ -21,20 +21,141 @@ namespace Minesweeper
 
         public void CreateButtons()
         {
-            int buttonSize = 40;
+            int buttonSize = 40; // maybe should be related to board size?
+            int boardSize = _gameboard.GetNumTiles();
             Color backColor = Color.LightGray;
 
-            for (int i = 0; i < 10; i++)
+            foreach(GameTile tile in _gameboard.GetGameTiles())
             {
-                for (int j = 0; j < 10; j++)
+                tile._button.Height = buttonSize;
+                tile._button.Width = buttonSize;
+                tile._button.BackColor = backColor;
+                tile._button.Location = new Point(tile.GetRow() * buttonSize, tile.GetCol() * buttonSize);
+                tile._button.MouseDown += new MouseEventHandler(Button_Click);
+                Controls.Add(tile._button);
+            }
+        }
+
+        private void PromptForNewGame(string result)
+        {
+            string message = "";
+            string caption = "";
+
+            if (result.Equals("loss"))
+            {
+                message = "Oof! Toughie.. please play again? UwU";
+                caption = "Sad";
+            }
+            else
+            {
+                message = "Winner Winner, Chicken Dinner! Play again..?";
+                caption = "Nice";
+            }
+
+            var prompt = MessageBox.Show(message, caption,
+                             MessageBoxButtons.YesNo,
+                             MessageBoxIcon.Exclamation);
+
+            if (prompt == DialogResult.No)
+            {
+                this.Close();
+            }
+            if (prompt == DialogResult.Yes)
+            {
+                RestartGame();
+            }
+        }
+
+        public void GameOver()
+        {
+            System.IO.Stream explosionSoundStream = Properties.Resources.explosion_x;
+            System.Media.SoundPlayer explosionSound = new System.Media.SoundPlayer(explosionSoundStream);
+
+            revealMines();
+            explosionSound.Play();
+            PromptForNewGame("loss");
+        }
+
+        public void PlaceFlag(GameTile tile)
+        {
+            tile.SetIsMarked(true);
+
+            tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
+            tile._button.Text = "⚑";
+            tile._button.BackColor = Color.Black;
+            tile._button.ForeColor = Color.Yellow;
+
+        }
+
+        public void RemoveFlag(GameTile tile)
+        {
+            setButtonTextAndColor(tile, Color.LightGray, Color.LightGray, "");
+            tile.SetIsMarked(false);
+        }
+
+        public void RevealTile(GameTile tile)
+        {
+            setButtonTextAndColor(tile, Color.DarkGray, Color.LightGray, tile.GetAdjacentMines().ToString());
+            tile.SetIsRevealed(true);
+
+            if (tile.GetAdjacentMines() == 0)
+            {
+                _gameboard.FloodZeroes(tile);
+            }
+            RefreshBoard();
+        }
+
+        public void RefreshBoard()
+        {
+            foreach(GameTile tile in _gameboard.GetGameTiles())
+            {
+                if(tile.GetIsRevealed() == true)
                 {
-                    _gameboard.GetGameTile(i,j)._button.Height = buttonSize;
-                    _gameboard.GetGameTile(i, j)._button.Width = buttonSize;
-                    _gameboard.GetGameTile(i, j)._button.BackColor = backColor;
-                    _gameboard.GetGameTile(i, j)._button.Location = new Point(i * buttonSize, j * buttonSize);
-                    _gameboard.GetGameTile(i, j)._button.MouseDown += new MouseEventHandler(Button_Click);
-                    Controls.Add(_gameboard.GetGameTile(i, j)._button);
-                } 
+                    Color backgroundColor = Color.LightGray;
+                    Color textColor = Color.DarkGray;
+
+                    tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
+                    tile._button.BackColor = backgroundColor;
+                    tile._button.ForeColor = textColor;
+
+                    tile._button.Text = tile.GetAdjacentMines().ToString();
+
+                    switch (tile.GetAdjacentMines())
+                    {
+                        case 0:
+                            tile._button.ForeColor = textColor;
+                            tile._button.BackColor = textColor;
+                            tile._button.Text = "";
+                            break;
+                        case 1:
+                            tile._button.ForeColor = Color.DarkBlue;
+                            break;
+                        case 2:
+                            tile._button.ForeColor = Color.DarkGreen;
+                            break;
+                        case 3:
+                            tile._button.ForeColor = Color.DarkRed;
+                            break;
+                        case 4:
+                            tile._button.ForeColor = Color.DarkOrange;
+                            break;
+                        case 5:
+                            tile._button.ForeColor = Color.DarkBlue;
+                            break;
+                        case 6:
+                            tile._button.ForeColor = Color.DarkGreen;
+                            break;
+                        case 7:
+                            tile._button.ForeColor = Color.DarkRed;
+                            break;
+                        case 8:
+                            tile._button.ForeColor = Color.DarkOrange;
+                            break;
+                        default:
+                            tile._button.ForeColor = Color.Blue;
+                            break;
+                    }
+                }
             }
         }
 
@@ -42,188 +163,117 @@ namespace Minesweeper
         {
             Button senderButton = (Button)sender;
 
-            int x = senderButton.Location.X / 40;
-            int y = senderButton.Location.Y / 40;
+            senderButton.Font = new Font("Courier New", 20, FontStyle.Bold);
+
+            int buttonSize = 40;
+
+            int x = senderButton.Location.X / buttonSize;
+            int y = senderButton.Location.Y / buttonSize;
+
+            GameTile clickedTile = _gameboard.GetGameTile(x, y);
 
             switch (e.Button)
             {
                 case MouseButtons.Left:
 
-                    senderButton.Font = new Font("Courier New", 15, FontStyle.Bold);
-                    if (_gameboard.GetGameTiles()[x, y].isMine)
+                    if (clickedTile.GetIsMine() == true)
                     {
-
-                        revealMines();
-
-                        System.IO.Stream str = Properties.Resources.explosion_x;
-                        System.Media.SoundPlayer snd = new System.Media.SoundPlayer(str);
-                        snd.Play();
-
-                        string message = "Oof! Toughie.. please play again? UwU";
-                        const string caption = "Sad";
-
-                        var result = MessageBox.Show(message, caption,
-                             MessageBoxButtons.YesNo,
-                             MessageBoxIcon.Exclamation);
-
-                        if (result == DialogResult.No)
-                        {
-                            this.Close();
-                        }
-                        if (result == DialogResult.Yes)
-                        {
-                            restartGame();
-                        }
-
+                        GameOver();
                     }
-                    else
+                    else if(clickedTile.GetIsRevealed() == false)
                     {
-                        setButtonTextAndColor(_gameboard.GetGameTiles()[x, y], Color.DarkGray, Color.LightGray, _gameboard.GetGameTiles()[x, y].adjacentMines.ToString());
-                        _gameboard.GetGameTiles()[x, y].isRevealed = true;
-
-                        if (_gameboard.GetGameTiles()[x, y].adjacentMines == 0)
-                        {
-                            floodZeroes(x, y);
-                        } // flip adjacent 0s
-
-                        if (checkForWin())
-                            youWon();
+                        RevealTile(clickedTile);
                     }
                     break;
 
                 case MouseButtons.Right:
 
-                    if (!_gameboard.GetGameTiles()[x, y].isMarked)
+                    if (clickedTile.GetIsMarked() == false && clickedTile.GetIsRevealed() == false)
                     {
-                        _gameboard.GetGameTiles()[x, y].isMarked = true;
-                        setButtonTextAndColor(_gameboard.GetGameTiles()[x, y], Color.Yellow, Color.Black, "⚑");
-
-                        if (checkForWin())
-                            youWon();
+                        PlaceFlag(clickedTile);                        
                     }
-                    else
+                    else if (clickedTile.GetIsMarked() == true && clickedTile.GetIsRevealed() == false)
                     {
-                        setButtonTextAndColor(_gameboard.GetGameTiles()[x, y], Color.LightGray, Color.LightGray, "");
-                        _gameboard.GetGameTiles()[x, y].isMarked = false;
+                        RemoveFlag(clickedTile);
                     }
                     break;
 
                 default:
                     break;
+            }
 
-            } // switch Button press
-        } // Button_Click
+            CheckForWin();
+        }
 
         public void revealMines()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < _gameboard.GetNumTiles(); i++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int j = 0; j < _gameboard.GetNumTiles(); j++)
                 {
-                    if (_gameboard.GetGameTiles()[i, j].isMine)
+                    GameTile tile = _gameboard.GetGameTile(i, j);
+
+                    if (tile.GetIsMine())
                     {
-                        setButtonTextAndColor(_gameboard.GetGameTiles()[i, j], _gameboard.GetGameTiles()[i, j].isMarked ? Color.Orange : Color.IndianRed, Color.Black, "💣");
+                        setButtonTextAndColor(tile, tile.GetIsMarked() ? Color.Orange : Color.IndianRed, Color.Black, "💣");
                     }
 
                 }
             }
-        } // revealMines
-
-        public void floodZeroes(int x, int y)
-        {
-            Queue<Point> s = new Queue<Point>();
-            Point p = new Point(x, y);
-            s.Enqueue(p);
-
-            while (s.Count > 0)
-            {
-                p = s.Dequeue();
-
-                Console.WriteLine(p);
-
-                setButtonTextAndColor(_gameboard.GetGameTiles()[p.X, p.Y], Color.DarkGray, Color.LightGray, _gameboard.GetGameTiles()[p.X, p.Y].adjacentMines.ToString());
-                _gameboard.GetGameTiles()[p.X, p.Y].isRevealed = true;
-
-                if (_gameboard.GetGameTiles()[p.X, p.Y].adjacentMines == 0)
-                {
-                    if (p.X > 0 && !_gameboard.GetGameTiles()[p.X - 1, p.Y].isRevealed) s.Enqueue(new Point(p.X - 1, p.Y));
-                    if (p.X < 9 && !_gameboard.GetGameTiles()[p.X + 1, p.Y].isRevealed) s.Enqueue(new Point(p.X + 1, p.Y));
-                    if (p.Y > 0 && !_gameboard.GetGameTiles()[p.X, p.Y - 1].isRevealed) s.Enqueue(new Point(p.X, p.Y - 1));
-                    if (p.Y < 9 && !_gameboard.GetGameTiles()[p.X, p.Y + 1].isRevealed) s.Enqueue(new Point(p.X, p.Y + 1));
-
-                    if (p.X < 9 && p.Y < 9 && !_gameboard.GetGameTiles()[p.X + 1, p.Y + 1].isRevealed) s.Enqueue(new Point(p.X + 1, p.Y + 1));
-                    if (p.X > 0 && p.Y > 0 && !_gameboard.GetGameTiles()[p.X - 1, p.Y - 1].isRevealed) s.Enqueue(new Point(p.X - 1, p.Y - 1));
-                    if (p.X > 0 && p.Y < 9 && !_gameboard.GetGameTiles()[p.X - 1, p.Y + 1].isRevealed) s.Enqueue(new Point(p.X - 1, p.Y + 1));
-                    if (p.X < 9 && p.Y > 0 && !_gameboard.GetGameTiles()[p.X + 1, p.Y - 1].isRevealed) s.Enqueue(new Point(p.X + 1, p.Y - 1));
-                }
-
-            } // while
-
         }
 
-        public bool checkForWin()
+        public void CheckForWin()
         {
-            for (int i = 0; i < 10; i++)
+            foreach(GameTile tile in _gameboard.GetGameTiles())
             {
-                for (int j = 0; j < 10; j++)
-                {
-                    if (_gameboard.GetGameTiles()[i, j].isMine && !_gameboard.GetGameTiles()[i, j].isMarked)
-                        return false;
+                // all mines must be marked
+                if (tile.GetIsMine() && !tile.GetIsMarked())
+                    return;
 
-                    // prevents marking all tiles to win
-                    if (!_gameboard.GetGameTiles()[i, j].isMine && _gameboard.GetGameTiles()[i, j].isMarked)
-                        return false;
+                // no flags can be placed on non-mine tiles
+                if (!tile.GetIsMine() && !tile.GetIsMarked())
+                    return;
 
-                    if (!_gameboard.GetGameTiles()[i, j].isRevealed && !_gameboard.GetGameTiles()[i, j].isMarked)
-                        return false;
+                // all tiles must be revealed or marked
+                if (!tile.GetIsRevealed() && !tile.GetIsMarked())
+                    return;
 
-                }
-            }
-            return true;
-        } // checkForWin
+                PromptForNewGame("win");
+            }         
+        }
 
         public void clearBoard()
         {
-            for (int i = 0; i < 10; i++)
+            foreach (GameTile tile in _gameboard.GetGameTiles())
             {
-                for (int j = 0; j < 10; j++)
-                {
-                    setButtonTextAndColor(_gameboard.GetGameTiles()[i, j], Color.LightGray, Color.LightGray, "");
-                } // for j
-            } // for i
-        } // clearBoard
+                setButtonTextAndColor(tile, Color.LightGray, Color.LightGray, "");
+            }
+        }
 
-        public void youWon()
+        public void UpdateButton(GameTile tile)
         {
-            string message = "WINNER! Play again..?";
-            const string caption = "Nice";
 
-            var result = MessageBox.Show(message, caption,
-                 MessageBoxButtons.YesNo,
-                 MessageBoxIcon.Question);
+            if(tile.GetIsRevealed() == true)
+            {
 
-            // If the no button was pressed ...
-            if (result == DialogResult.No)
-            {
-                // cancel the closure of the form.
-                this.Close();
             }
-            if (result == DialogResult.Yes)
+            else if(tile.GetIsMarked() == true)
             {
-                restartGame();
+
             }
-        } // youWon
+
+        }
 
         public void setButtonTextAndColor(GameTile tile, Color backColor, Color foreColor, String text)
         {
             tile._button.BackColor = backColor;
             tile._button.ForeColor = foreColor;
-            tile._button.Font = text.Equals("⚑") ? new Font("Courier New", 20, FontStyle.Bold) : new Font("Courier New", 15, FontStyle.Bold);
+            
             tile._button.Text = text;
 
-            if (!tile.isMarked && !tile.isMine)
+            if (!tile.GetIsMarked() && !tile.GetIsMine())
             {
-                switch (tile.adjacentMines)
+                switch (tile.GetAdjacentMines())
                 {
                     case 0:
                         tile._button.ForeColor = backColor;
@@ -256,15 +306,13 @@ namespace Minesweeper
                     default:
                         tile._button.ForeColor = Color.Blue;
                         break;
-                } // switch
-            } // if
-        } // setButtonTextAndColor
+                }
+            }
+        }
 
-        public void restartGame()
+        public void RestartGame()
         {
-            GameTile.clearMines(_gameboard);
-            GameTile.setMines(_gameboard);
-            GameTile.setAdjacentMines(_gameboard);
+            _gameboard.ResetBoard();
             clearBoard();
         } // restartGame
 

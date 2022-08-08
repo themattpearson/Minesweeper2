@@ -68,10 +68,29 @@ namespace Minesweeper
             return _isMarked;
         }
 
+        public bool GetIsRevealed()
+        {
+            return _isRevealed;
+        }
+
+        public void SetIsRevealed(bool isRevealed)
+        {
+            _isRevealed = isRevealed;
+        }
+
         public void SetLocation(int row, int col)
         {
             _row = row;
             _col = col;
+        }
+
+        public int GetRow()
+        {
+            return _row;
+        }
+        public int GetCol()
+        {
+            return _col;
         }
 
         public void ResetGameTile()
