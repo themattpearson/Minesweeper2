@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using static Minesweeper.Game;
 
 namespace Minesweeper
 {
@@ -11,6 +10,12 @@ namespace Minesweeper
         private Gameboard _gameboard;
 
         public Form1()
+        {
+            NewGame();
+        }
+            
+
+        public void NewGame()
         {
             _game = new Game(Difficulty.EASY);
             _gameboard = _game.GetGameboard();
@@ -119,40 +124,15 @@ namespace Minesweeper
 
                     tile._button.Text = tile.GetAdjacentMines().ToString();
 
-                    switch (tile.GetAdjacentMines())
+                    if(tile.GetAdjacentMines() == 0)
                     {
-                        case 0:
-                            tile._button.ForeColor = textColor;
-                            tile._button.BackColor = textColor;
-                            tile._button.Text = "";
-                            break;
-                        case 1:
-                            tile._button.ForeColor = Color.DarkBlue;
-                            break;
-                        case 2:
-                            tile._button.ForeColor = Color.DarkGreen;
-                            break;
-                        case 3:
-                            tile._button.ForeColor = Color.DarkRed;
-                            break;
-                        case 4:
-                            tile._button.ForeColor = Color.DarkOrange;
-                            break;
-                        case 5:
-                            tile._button.ForeColor = Color.DarkBlue;
-                            break;
-                        case 6:
-                            tile._button.ForeColor = Color.DarkGreen;
-                            break;
-                        case 7:
-                            tile._button.ForeColor = Color.DarkRed;
-                            break;
-                        case 8:
-                            tile._button.ForeColor = Color.DarkOrange;
-                            break;
-                        default:
-                            tile._button.ForeColor = Color.Blue;
-                            break;
+                        tile._button.ForeColor = textColor;
+                        tile._button.BackColor = textColor;
+                        tile._button.Text = "";
+                    }
+                    else
+                    {
+                        tile._button.ForeColor = GetTextColor(tile.GetAdjacentMines());
                     }
                 }
             }
@@ -182,6 +162,7 @@ namespace Minesweeper
                     else if(clickedTile.GetIsRevealed() == false)
                     {
                         RevealTile(clickedTile);
+                        CheckForWin();
                     }
                     break;
 
@@ -189,7 +170,8 @@ namespace Minesweeper
 
                     if (clickedTile.GetIsMarked() == false && clickedTile.GetIsRevealed() == false)
                     {
-                        PlaceFlag(clickedTile);                        
+                        PlaceFlag(clickedTile);
+                        CheckForWin();
                     }
                     else if (clickedTile.GetIsMarked() == true && clickedTile.GetIsRevealed() == false)
                     {
@@ -200,8 +182,6 @@ namespace Minesweeper
                 default:
                     break;
             }
-            
-            CheckForWin();
         }
 
         public void RevealMines()
@@ -223,11 +203,10 @@ namespace Minesweeper
                 if (tile.GetIsMine() && !tile.GetIsMarked())
                     return;
 
-                // no flags can be placed on non-mine tiles
-                if (!tile.GetIsMine() && !tile.GetIsMarked())
+                // a non-mine tile is currently flagged
+                if (tile.GetIsMine() == false && tile.GetIsMarked() == true)
                     return;
 
-                // all tiles must be revealed or marked
                 if (!tile.GetIsRevealed() && !tile.GetIsMarked())
                     return;
             }
@@ -246,55 +225,43 @@ namespace Minesweeper
         {
             tile._button.BackColor = backColor;
             tile._button.ForeColor = foreColor;
-            
             tile._button.Text = text;
 
             if (!tile.GetIsMarked() && !tile.GetIsMine())
             {
-                switch (tile.GetAdjacentMines())
-                {
-                    case 0:
-                        tile._button.ForeColor = backColor;
-                        tile._button.Text = "";
-                        break;
-                    case 1:
-                        tile._button.ForeColor = Color.DarkBlue;
-                        break;
-                    case 2:
-                        tile._button.ForeColor = Color.DarkGreen;
-                        break;
-                    case 3:
-                        tile._button.ForeColor = Color.DarkRed;
-                        break;
-                    case 4:
-                        tile._button.ForeColor = Color.DarkOrange;
-                        break;
-                    case 5:
-                        tile._button.ForeColor = Color.DarkBlue;
-                        break;
-                    case 6:
-                        tile._button.ForeColor = Color.DarkGreen;
-                        break;
-                    case 7:
-                        tile._button.ForeColor = Color.DarkRed;
-                        break;
-                    case 8:
-                        tile._button.ForeColor = Color.DarkOrange;
-                        break;
-                    default:
-                        tile._button.ForeColor = Color.Blue;
-                        break;
-                }
+                tile._button.ForeColor = GetTextColor(tile.GetAdjacentMines());
+            }
+        }
+
+        public Color GetTextColor(int adjacentMines)
+        {
+            switch (adjacentMines)
+            {
+                case 1:
+                    return Color.DarkBlue;
+                case 2:
+                    return Color.DarkGreen;
+                case 3:
+                    return Color.DarkRed;
+                case 4:
+                    return Color.DarkOrange;
+                case 5:
+                    return Color.DarkBlue;
+                case 6:
+                    return Color.DarkGreen;
+                case 7:
+                    return Color.DarkRed;
+                case 8:
+                    return Color.DarkOrange;
+                default:
+                    return Color.Blue;
             }
         }
 
         public void RestartGame()
         {
-            _gameboard.ResetBoard();
             clearBoard();
-        } // restartGame
-
+            NewGame();
+        }
     }
-
-
 }

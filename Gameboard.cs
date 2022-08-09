@@ -29,10 +29,10 @@ namespace Minesweeper
             _numTiles = numTiles;
             _numMines = numMines;
 
-            CreateEmptyBoard();
+            InitializeBoard();
         }
 
-        private void CreateEmptyBoard()
+        private void InitializeBoard()
         {
             _gameTiles = new GameTile[_numTiles, _numTiles];
 
@@ -163,11 +163,9 @@ namespace Minesweeper
                     if (p.X > 0 && p.Y > 0 && !GetGameTile(p.X - 1, p.Y - 1).GetIsRevealed()) s.Enqueue(new Point(p.X - 1, p.Y - 1));
                     if (p.X > 0 && p.Y < 9 && !GetGameTile(p.X - 1, p.Y + 1).GetIsRevealed()) s.Enqueue(new Point(p.X - 1, p.Y + 1));
                     if (p.X < 9 && p.Y > 0 && !GetGameTile(p.X + 1, p.Y - 1).GetIsRevealed()) s.Enqueue(new Point(p.X + 1, p.Y - 1));
-
                 }
             }
         }
-
         public void SeedGameboard()
         {
             var rand = new Random();
@@ -176,20 +174,21 @@ namespace Minesweeper
 
             do
             {
-                for (int i = 0; i < _numTiles; i++)
+                foreach (GameTile tile in _gameTiles)
                 {
-                    for (int j = 0; j < _numTiles; j++)
+                    if (placedMines >= _numMines)
                     {
-                        if (rand.Next(101) > mineProbability && placedMines < _numMines)
-                        {
-                            _gameTiles[i, j].SetIsMine(true);
-                            placedMines++;
-                        }
+                        break;
+                    }
+
+                    if (rand.Next(101) > mineProbability && placedMines < _numMines)
+                    {
+                        tile.SetIsMine(true);
+                        placedMines++;
                     }
                 }
-
-            } while (placedMines < _numMines);
-
+            } while (placedMines >= _numMines);
+            
             SetAdjacentMines();
         }
 
@@ -211,43 +210,6 @@ namespace Minesweeper
                     }
                 }
                 tile.SetAdjacentMines(sum);
-            }
-
-            /*
-            int borderValue = _numTiles - 1;
-
-            for (int i = 0; i < _numTiles; i++)
-            {
-                for (int j = 0; j < _numTiles; j++)
-                {
-                    int sum = 0;
-
-                    sum = j < borderValue && _gameTiles[i, j + 1].GetIsMine() ? sum + 1 : sum;
-                    sum = j > 0 && _gameTiles[i, j - 1].GetIsMine() ? sum + 1 : sum;
-
-                    sum = i < borderValue && _gameTiles[i + 1, j].GetIsMine() ? sum + 1 : sum;
-                    sum = i < borderValue && j < borderValue && _gameTiles[i + 1, j + 1].GetIsMine() ? sum + 1 : sum;
-                    sum = i < borderValue && j > 0 && _gameTiles[i + 1, j - 1].GetIsMine() ? sum + 1 : sum;
-
-                    sum = i > 0 && _gameTiles[i - 1, j].GetIsMine() ? sum + 1 : sum;
-                    sum = i > 0 && j < borderValue && _gameTiles[i - 1, j + 1].GetIsMine() ? sum + 1 : sum;
-                    sum = i > 0 && j > 0 && _gameTiles[i - 1, j - 1].GetIsMine() ? sum + 1 : sum;
-
-                    _gameTiles[i, j].SetAdjacentMines(sum);
-
-                }
-            }
-            */
-        }
-
-        public void ClearMines()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    _gameTiles[i, j].ResetGameTile();
-                }
             }
         }
 
