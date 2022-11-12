@@ -79,13 +79,11 @@ namespace Minesweeper
         public void SetAdjacentMines()
         {
             List<GameTile> adjacentTiles = new List<GameTile>();
-            int currentRow; 
-            int currentCol;
 
             foreach (GameTile tile in _gameTiles)
             {
-                currentRow = tile.GetRow();
-                currentCol = tile.GetCol();                    
+                int currentRow = tile.GetRow();
+                int currentCol = tile.GetCol();                    
 
                 for (int i = currentRow - 1; i <= currentRow + 1; i++)
                 {
