@@ -66,5 +66,6 @@ namespace Minesweeper
 
             this.Dispose();
         }
+
     }
 }

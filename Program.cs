@@ -27,6 +27,11 @@ namespace Minesweeper
             _difficultySelectorForm = new DifficultySelectorForm();
             _difficultySelectorForm.ShowDialog();
 
+            if (_difficulty == null)
+            {
+                return;
+            }
+
             _minesweeperForm = new MinesweeperForm(_difficulty);
             _minesweeperForm.ShowDialog();
 
