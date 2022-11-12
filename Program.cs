@@ -14,10 +14,12 @@ namespace Minesweeper
         [STAThread]
         static void Main()
         {
-            newGame();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
 
-        public static void newGame()
+        public static void NewGame()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

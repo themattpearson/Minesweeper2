@@ -38,6 +38,23 @@ namespace Minesweeper
             _button = new Button();
         }
 
+        public bool Equals(GameTile otherTile)
+        {
+            if (this._row == otherTile._row && this._col == otherTile._col)
+                return true;
+            return false;
+        }
+
+        public GameTile CreateEmptyGameTile()
+        {
+            return new GameTile();
+        }
+
+        public GameTile CreateNewGameTile(int row, int col)
+        {
+            return new GameTile(row, col);
+        }
+
         public void SetIsMine(bool isMine)
         {
             _isMine = isMine;
@@ -56,6 +73,10 @@ namespace Minesweeper
         public int GetAdjacentMines()
         {
             return _adjacentMines;
+        }
+        public void IncrementAdjacentMines()
+        {
+            _adjacentMines++;
         }
 
         public void SetIsMarked(bool isMarked)
@@ -76,12 +97,6 @@ namespace Minesweeper
         public void SetIsRevealed(bool isRevealed)
         {
             _isRevealed = isRevealed;
-        }
-
-        public void SetLocation(int row, int col)
-        {
-            _row = row;
-            _col = col;
         }
 
         public int GetRow()

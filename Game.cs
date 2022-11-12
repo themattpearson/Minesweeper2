@@ -2,67 +2,41 @@
 
 namespace Minesweeper
 {
-    public enum Difficulty { EASY, MEDIUM, HARD, CUSTOM };
-
     public class Game
     {
         private Gameboard _gameboard;
-        
-        private readonly int _hardDifficultyTiles = 20;
-        private readonly int _hardDifficultyMines = 30;
 
-        private readonly int _mediumDifficultyTiles = 15;
-        private readonly int _mediumDifficultyMines = 20;
+        private readonly int _hardDifficultyTiles = 17;
+        private readonly int _hardDifficultyMines = 35;
+
+        private readonly int _mediumDifficultyTiles = 12;
+        private readonly int _mediumDifficultyMines = 15;
 
         private readonly int _easyDifficultyTiles = 10;
         private readonly int _easyDifficultyMines = 10;
 
-        public Game(Enum difficultySetting)
+        public Game(string difficulty)
         {
-            switch (difficultySetting)
+            switch (difficulty.ToLower())
             {
-                case Difficulty.HARD: 
-                    HardGame();
+                case "easy":
+                   _gameboard = new Gameboard(_easyDifficultyTiles, _easyDifficultyMines);
                     break;
-                case Difficulty.MEDIUM:
-                    MediumGame();
+                case "medium":
+                    _gameboard = new Gameboard(_mediumDifficultyTiles, _mediumDifficultyMines);
                     break;
-                case Difficulty.EASY:
-                    EasyGame();
+                case "hard":
+                    _gameboard = new Gameboard(_hardDifficultyTiles, _hardDifficultyMines);
                     break;
                 default:
-                    EasyGame();
+                    _gameboard = new Gameboard(_easyDifficultyTiles, _easyDifficultyMines);
                     break;
-            }    
+            }
+
+            _gameboard.PlaceMines();
+
+            _gameboard.SetAdjacentMines();
         }
-
-        private void HardGame()
-        {
-            _gameboard = new Gameboard(_hardDifficultyTiles, _hardDifficultyMines);
-        }
-
-        private void MediumGame()
-        {
-            _gameboard = new Gameboard(_mediumDifficultyTiles, _mediumDifficultyMines);
-        }
-
-        private void EasyGame()
-        {
-            _gameboard = new Gameboard(_easyDifficultyTiles, _easyDifficultyMines);
-            _gameboard.SeedGameboard();
-        }
-
-        private void CustomGame(int rows, int cols, int mines)
-        {
-
-        }
-
-        private void StartRound()
-        {
-
-        }
-
-       
 
         public Gameboard GetGameboard()
         {
