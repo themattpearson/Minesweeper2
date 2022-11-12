@@ -4,22 +4,23 @@ using System.Windows.Forms;
 
 namespace Minesweeper
 {
-    public partial class Form1 : Form
+    public partial class MinesweeperForm : Form
     {
         private Game _game;
         private Gameboard _gameboard;
 
         public Color _buttonBackgroundColor = Color.LightGray;
 
-        public Form1()
+        public MinesweeperForm(string difficulty)
         {
-            NewGame();
+            NewGame(difficulty);
         }
             
 
-        public void NewGame()
+        public void NewGame(string difficulty)
         {
-            _game = new Game("hard");
+
+            _game = new Game(difficulty);
             _gameboard = _game.GetGameboard();
 
             InitializeComponent();
@@ -28,11 +29,12 @@ namespace Minesweeper
 
         public void Restart()
         {
-            foreach (GameTile tile in _gameboard.GetGameTiles())
-            {
-                Controls.Remove(tile._button);
-            }
-            NewGame();
+            this.Dispose();
+            //foreach (GameTile tile in _gameboard.GetGameTiles())
+            //{
+            //    Controls.Remove(tile._button);
+            //}
+            Program.NewGame();
         }
 
         public void CreateButtons()
@@ -74,7 +76,7 @@ namespace Minesweeper
 
             if (prompt == DialogResult.No)
             {
-                this.Close();
+                Program.CloseAll();
             }
             if (prompt == DialogResult.Yes)
             {
