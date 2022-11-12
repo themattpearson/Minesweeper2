@@ -30,10 +30,9 @@ namespace Minesweeper
         public void Restart()
         {
             this.Dispose();
-            //foreach (GameTile tile in _gameboard.GetGameTiles())
-            //{
-            //    Controls.Remove(tile._button);
-            //}
+
+            Program._difficulty = null;
+
             Program.NewGame();
         }
 
