@@ -10,3 +10,14 @@ C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper
 C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.csproj.CoreCompileInputs.cache
 C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.exe
 C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Debug\Minesweeper.pdb
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.csproj.AssemblyReference.cache
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.DifficultySelectorForm.resources
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.MinesweeperForm.resources
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.Properties.Resources.resources
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.csproj.GenerateResource.cache
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.csproj.CoreCompileInputs.cache
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.exe
+D:\Unity\Minesweeper2\obj\Debug\Minesweeper.pdb
+D:\Unity\Minesweeper2\bin\Debug\Minesweeper.exe.config
+D:\Unity\Minesweeper2\bin\Debug\Minesweeper.exe
+D:\Unity\Minesweeper2\bin\Debug\Minesweeper.pdb

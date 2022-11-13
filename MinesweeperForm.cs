@@ -58,15 +58,16 @@ namespace Minesweeper
             string message = "";
             string caption = "";
 
+            //Changed captions for JulchMod
             if (result.Equals("loss"))
             {
-                message = "Oof! Toughie.. please play again? UwU";
-                caption = "Sad";
+                message = "Lick my nuts, bucko! (Try Again?)";
+                caption = "YOU LOSE";
             }
             else
             {
-                message = "Winner Winner, Chicken Dinner! Play again..?";
-                caption = "Nice";
+                message = "Suck my dick! (Run it back?)";
+                caption = "YOU WIN";
             }
 
             var prompt = MessageBox.Show(message, caption,
@@ -85,7 +86,7 @@ namespace Minesweeper
 
         public void GameOver()
         {
-            System.IO.Stream explosionSoundStream = Properties.Resources.explosion_x;
+            System.IO.Stream explosionSoundStream = Properties.Resources.lors_explosion; // JulchMod changes the explosion noise to a Lors "GARGH" noise
             System.Media.SoundPlayer explosionSound = new System.Media.SoundPlayer(explosionSoundStream);
 
             RevealMines();
@@ -98,9 +99,9 @@ namespace Minesweeper
             tile.SetIsMarked(true);
 
             tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
-            tile._button.Text = "⚑";
             tile._button.BackColor = Color.Black;
-            tile._button.ForeColor = Color.Yellow;
+            tile._button.ForeColor = Color.Red;
+                        tile._button.Text = "ඞ"; // swapped for JulchMod
         }
 
         public void GuessTile(GameTile tile)
@@ -174,7 +175,7 @@ namespace Minesweeper
             {
                 if (tile.GetIsMine())
                 {
-                    SetButtonTextAndColor(tile, "💣");
+                    SetButtonTextAndColor(tile, "🍖");
                 }
             }
         }
@@ -203,7 +204,7 @@ namespace Minesweeper
             {
                 if (tile.GetIsMarked())
                 {
-                    SetButtonTextAndColor(tile, "⚑");
+                    SetButtonTextAndColor(tile, "ඞ"); //swapped for JulchMod               
                 }
                 else
                 {
@@ -215,17 +216,17 @@ namespace Minesweeper
         public void SetButtonTextAndColor(GameTile tile, String text)
         {
             tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
-            if (text.Equals("⚑"))
+            if (text.Equals("ඞ")) //changed to space for JulchMod
             {
-                tile._button.Text = "⚑";
+                tile._button.Text = "ඞ"; //changed for JulchMod
                 tile._button.BackColor = Color.Black;
-                tile._button.ForeColor = Color.Yellow;
+                tile._button.ForeColor = Color.Red;
             }
-            else if (text.Equals("💣"))
+            else if (text.Equals("🍖"))
             {
                 tile._button.BackColor = tile.GetIsMarked() ? Color.Orange : Color.IndianRed;
                 tile._button.ForeColor = Color.Black;
-                tile._button.Text = "💣";
+                tile._button.Text = "🍖";
             }
             else if (tile.GetIsRevealed() == true)
             {
@@ -237,11 +238,23 @@ namespace Minesweeper
                 {
                     tile._button.ForeColor = Color.LightGray;
                     tile._button.Text = "";
+                    //Add lors face for JulchMod
+                    tile._button.Image = Minesweeper.Properties.Resources.lors40;
+
+
                 }
+
                 else
                 {
                     tile._button.ForeColor = GetTextColor(adjacentMines);
                     tile._button.Text = adjacentMines.ToString();
+
+                    //added this check to see if we're next to a mine and label the tile "SUS"
+                
+                    if(adjacentMines == 1)
+                    {
+                        tile._button.Text = "1"; 
+                    }
                 }
             }
             else
