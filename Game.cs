@@ -17,13 +17,13 @@
         {
             switch (difficulty.ToLower())
             {
-                case "easy":
+                case "baby":
                    _gameboard = new Gameboard(_easyDifficultyTiles, _easyDifficultyMines);
                     break;
-                case "medium":
+                case "not bad":
                     _gameboard = new Gameboard(_mediumDifficultyTiles, _mediumDifficultyMines);
                     break;
-                case "hard":
+                case "serious":
                     _gameboard = new Gameboard(_hardDifficultyTiles, _hardDifficultyMines);
                     break;
                 default:

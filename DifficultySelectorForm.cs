@@ -20,9 +20,9 @@ namespace Minesweeper
             _mediumGameButton.Width = 75;
             _hardGameButton.Width = 75;
 
-            _easyGameButton.Text = "Easy";
-            _mediumGameButton.Text = "Medium";
-            _hardGameButton.Text = "Hard";
+            _easyGameButton.Text = "baby";
+            _mediumGameButton.Text = "not bad";
+            _hardGameButton.Text = "serious";
 
             _easyGameButton.Location = new Point(0, 100);
             _mediumGameButton.Location = new Point(75, 100);
@@ -53,15 +53,15 @@ namespace Minesweeper
 
             if (senderButton == _easyGameButton)
             {
-                Program._difficulty = "easy";
+                Program._difficulty = "baby";
             }
             if (senderButton == _mediumGameButton)
             {
-                Program._difficulty = "medium";
+                Program._difficulty = "not bad";
             }
             if (senderButton == _hardGameButton)
             {
-                Program._difficulty = "hard";
+                Program._difficulty = "serious";
             }
 
             this.Dispose();
