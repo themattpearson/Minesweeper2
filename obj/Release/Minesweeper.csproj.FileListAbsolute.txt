@@ -1,0 +1,16 @@
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\bin\Release\Minesweeper.exe.config
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\bin\Release\Minesweeper.exe.manifest
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\bin\Release\Minesweeper.application
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\bin\Release\Minesweeper.exe
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\bin\Release\Minesweeper.pdb
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.csproj.AssemblyReference.cache
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.csproj.SuggestedBindingRedirects.cache
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.DifficultySelectorForm.resources
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.MinesweeperForm.resources
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.Properties.Resources.resources
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.csproj.GenerateResource.cache
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.csproj.CoreCompileInputs.cache
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.exe.manifest
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.application
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.exe
+C:\Users\Matt Pearson\source\repos\Minesweeper\Minesweeper\obj\Release\Minesweeper.pdb
