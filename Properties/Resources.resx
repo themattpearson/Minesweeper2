@@ -122,7 +122,7 @@
         AAEAAAD/////AQAAAAAAAAAEAQAAABZTeXN0ZW0uSU8uTWVtb3J5U3RyZWFtCgAAAAdfYnVmZmVyB19v
         cmlnaW4JX3Bvc2l0aW9uB19sZW5ndGgJX2NhcGFjaXR5C19leHBhbmRhYmxlCV93cml0YWJsZQpfZXhw
         b3NhYmxlB19pc09wZW4dTWFyc2hhbEJ5UmVmT2JqZWN0K19faWRlbnRpdHkHAAAAAAAAAAACAggICAgB
-        AQEBCQIAAAAAAAAAAAAAAKA+AACgPgAAAAEAAQoPAgAAAKA+AAACUklGRpg+AABXQVZFZm10IBAAAAAB
+        AQEBCQIAAAAAAAAAoD4AAKA+AACgPgAAAAEAAQoPAgAAAKA+AAACUklGRpg+AABXQVZFZm10IBAAAAAB
         AAEAESsAABErAAABAAgAZGF0YXM+AACboaikoJm5zrC1sejjz8i1tqigqKmehanDw7+7rqKQgnqBXSUm
         GAkIDB4FKSg6WoGqmIymura9y9POz+7q3s2yj1wnMAkqPGBqlGdjWhsAChIdNFqZ0NbCsIuLYWJUd5Ol
         wLTBppKKkpORkoqYoJWPg3d/lLjS3djSyLSYfW1dNCEaHBgYHyUqK0V1mb7GxrasuqiJdVlCQEVTc6ul
@@ -391,5 +391,21 @@
         gICAgIB/f39/f39/f39/f4CAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBgYGBgICAgICA
         gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAACw==
 </value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lors" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lors.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lors40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lors40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="lors_explosion" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\lors_explosion.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="nickface" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nickface.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="nickface2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\nickface2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

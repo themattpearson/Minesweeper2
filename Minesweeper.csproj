@@ -123,10 +123,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="explosion_x.wav" />
+    <None Include="Resources\lors_explosion.wav" />
+    <None Include="Resources\nickface2.png" />
+    <None Include="Resources\lors.png" />
+    <None Include="Resources\nickface.png" />
+    <None Include="Resources\lors40.png" />
+    <Content Include="SoundEffects\explosion_x.wav" />
     <Content Include="Properties\explosion_x.wav" />
     <Content Include="minesweeper.png" />
     <Content Include="minesweeper_Rzo_icon.ico" />
+    <Content Include="SoundEffects\lors_explosion.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

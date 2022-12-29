@@ -11,13 +11,13 @@ namespace Minesweeper
 
         public Color _buttonBackgroundColor = Color.LightGray;
 
-        public MinesweeperForm(string difficulty)
+        public MinesweeperForm(int difficulty)
         {
             NewGame(difficulty);
         }
             
 
-        public void NewGame(string difficulty)
+        public void NewGame(int difficulty)
         {
 
             _game = new Game(difficulty);
@@ -31,14 +31,14 @@ namespace Minesweeper
         {
             this.Dispose();
 
-            Program._difficulty = null;
+            Program._difficulty = -1;
 
             Program.NewGame();
         }
 
         public void CreateButtons()
         {
-            int buttonSize = 40; // maybe should be related to board size?
+            int buttonSize = 40;
             int boardSize = _gameboard.GetNumTiles();
             Color backColor = Color.LightGray;
 
@@ -60,13 +60,30 @@ namespace Minesweeper
 
             if (result.Equals("loss"))
             {
-                message = "Oof! Toughie.. please play again? UwU";
-                caption = "Sad";
+                if (Program._julchModEnabled)
+                {
+                    message = "Lick my nuts, bucko! (Try Again?)";
+                    caption = "YOU LOSE";
+                }
+                else
+                {
+                    message = "Oof! Toughie.. please play again? UwU";
+                    caption = "Sad";
+                }
             }
             else
             {
-                message = "Winner Winner, Chicken Dinner! Play again..?";
-                caption = "Nice";
+                if (Program._julchModEnabled)
+                {
+                    message = "Suck my dick! (Run it back?)";
+                    caption = "YOU WIN";
+                }
+                else
+                {
+                    message = "Winner Winner, Chicken Dinner! Play again..?";
+                    caption = "Nice";
+                }
+
             }
 
             var prompt = MessageBox.Show(message, caption,
@@ -85,7 +102,17 @@ namespace Minesweeper
 
         public void GameOver()
         {
-            System.IO.Stream explosionSoundStream = Properties.Resources.explosion_x;
+            System.IO.Stream explosionSoundStream;
+
+            if (Program._julchModEnabled)
+            {
+                explosionSoundStream = Properties.Resources.lors_explosion;
+            }
+            else
+            {
+                explosionSoundStream = Properties.Resources.explosion_x;
+            }
+            
             System.Media.SoundPlayer explosionSound = new System.Media.SoundPlayer(explosionSoundStream);
 
             RevealMines();
@@ -97,10 +124,21 @@ namespace Minesweeper
         {
             tile.SetIsMarked(true);
 
-            tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
-            tile._button.Text = "⚑";
-            tile._button.BackColor = Color.Black;
-            tile._button.ForeColor = Color.Yellow;
+            if(Program._julchModEnabled)
+            {
+                tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
+                tile._button.Text = "ඞ";
+                tile._button.BackColor = Color.Black;
+                tile._button.ForeColor = Color.Red;
+            }
+            else
+            {
+                tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
+                tile._button.Text = "⚑";
+                tile._button.BackColor = Color.Black;
+                tile._button.ForeColor = Color.Yellow;
+            }
+
         }
 
         public void GuessTile(GameTile tile)
@@ -174,7 +212,14 @@ namespace Minesweeper
             {
                 if (tile.GetIsMine())
                 {
-                    SetButtonTextAndColor(tile, "💣");
+                    if (Program._julchModEnabled)
+                    {
+                        SetButtonTextAndColor(tile, "🍖");
+                    }
+                    else
+                    {
+                        SetButtonTextAndColor(tile, "💣");
+                    }                  
                 }
             }
         }
@@ -201,9 +246,16 @@ namespace Minesweeper
         {
             foreach (GameTile tile in _gameboard.GetGameTiles())
             {
-                if (tile.GetIsMarked())
+                if (tile.GetIsMarked() && !tile.GetIsRevealed())
                 {
-                    SetButtonTextAndColor(tile, "⚑");
+                    if (Program._julchModEnabled)
+                    {
+                        SetButtonTextAndColor(tile, "ඞ");
+                    }
+                    else
+                    {
+                        SetButtonTextAndColor(tile, "⚑");
+                    }
                 }
                 else
                 {
@@ -215,17 +267,36 @@ namespace Minesweeper
         public void SetButtonTextAndColor(GameTile tile, String text)
         {
             tile._button.Font = new Font("Courier New", 20, FontStyle.Bold);
-            if (text.Equals("⚑"))
+            if (text.Equals("⚑") || text.Equals("ඞ"))
             {
-                tile._button.Text = "⚑";
-                tile._button.BackColor = Color.Black;
-                tile._button.ForeColor = Color.Yellow;
+                if (Program._julchModEnabled)
+                {
+                    tile._button.BackColor = Color.Black;
+                    tile._button.ForeColor = Color.Red;
+                    tile._button.Text = "ඞ";
+                }
+                else
+                {
+                    tile._button.BackColor = Color.Black;
+                    tile._button.ForeColor = Color.Yellow;
+                    tile._button.Text = "⚑";
+                }
+
             }
-            else if (text.Equals("💣"))
+            else if (text.Equals("💣")  || text.Equals("🍖"))
             {
-                tile._button.BackColor = tile.GetIsMarked() ? Color.Orange : Color.IndianRed;
-                tile._button.ForeColor = Color.Black;
-                tile._button.Text = "💣";
+                if (Program._julchModEnabled)
+                {
+                    tile._button.BackColor = tile.GetIsMarked() ? Color.Orange : Color.IndianRed;
+                    tile._button.ForeColor = Color.Black;
+                    tile._button.Text = "🍖";
+                }
+                else
+                {
+                    tile._button.BackColor = tile.GetIsMarked() ? Color.Orange : Color.IndianRed;
+                    tile._button.ForeColor = Color.Black;
+                    tile._button.Text = "💣";
+                }
             }
             else if (tile.GetIsRevealed() == true)
             {
@@ -235,8 +306,17 @@ namespace Minesweeper
 
                 if (adjacentMines == 0)
                 {
-                    tile._button.ForeColor = Color.LightGray;
-                    tile._button.Text = "";
+                    if (Program._julchModEnabled)
+                    {
+                        tile._button.ForeColor = Color.LightGray;
+                        tile._button.Text = "";
+                        tile._button.Image = Properties.Resources.lors40;
+                    }
+                    else
+                    {
+                        tile._button.ForeColor = Color.LightGray;
+                        tile._button.Text = "";
+                    }
                 }
                 else
                 {

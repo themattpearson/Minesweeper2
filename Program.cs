@@ -8,9 +8,10 @@ namespace Minesweeper
 {
     internal static class Program
     {
-        public static string _difficulty;
+        public static int _difficulty = -1;
         private static DifficultySelectorForm _difficultySelectorForm;
         private static MinesweeperForm _minesweeperForm;
+        public static bool _julchModEnabled;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -27,7 +28,7 @@ namespace Minesweeper
             _difficultySelectorForm = new DifficultySelectorForm();
             _difficultySelectorForm.ShowDialog();
 
-            if (_difficulty == null)
+            if (_difficulty == -1)
             {
                 return;
             }

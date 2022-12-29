@@ -13,17 +13,17 @@
         private readonly int _easyDifficultyTiles = 10;
         private readonly int _easyDifficultyMines = 10;
 
-        public Game(string difficulty)
+        public Game(int difficulty)
         {
-            switch (difficulty.ToLower())
+            switch (difficulty)
             {
-                case "easy":
+                case 0:
                    _gameboard = new Gameboard(_easyDifficultyTiles, _easyDifficultyMines);
                     break;
-                case "medium":
+                case 1:
                     _gameboard = new Gameboard(_mediumDifficultyTiles, _mediumDifficultyMines);
                     break;
-                case "hard":
+                case 2:
                     _gameboard = new Gameboard(_hardDifficultyTiles, _hardDifficultyMines);
                     break;
                 default:
